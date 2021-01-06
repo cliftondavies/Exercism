@@ -11,21 +11,20 @@ class Microwave
     if @time.to_i < 100
       convert_to_timer_equivalent(@time.to_i)
     elsif @time.to_i < 1000
-      @minutes += @time[0].to_i
-      convert_to_timer_equivalent(@time[1, 2].to_i)
+      convert_to_timer_equivalent(@time[1, 2].to_i, @time[0].to_i)
     else
-      @minutes += @time[0, 2].to_i
-      convert_to_timer_equivalent(@time[2, 2].to_i)
+      convert_to_timer_equivalent(@time[2, 2].to_i, @time[0, 2].to_i)
     end
   end
 
   private
 
-  def convert_to_timer_equivalent(time)
-    if time < 60
-      @seconds += time
+  def convert_to_timer_equivalent(seconds, minutes = 0)
+    @minutes += minutes
+    if seconds < 60
+      @seconds += seconds
     else
-      @seconds += time - 60
+      @seconds += seconds - 60
       @minutes += 1
     end
     @seconds = "0#{@seconds}" if @seconds < 10
